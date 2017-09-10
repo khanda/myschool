@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 10, 2017 at 08:30 AM
+-- Generation Time: Sep 10, 2017 at 08:54 AM
 -- Server version: 10.1.19-MariaDB
 -- PHP Version: 5.6.28
 
@@ -23,6 +23,20 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `clazz`
+--
+
+CREATE TABLE `clazz` (
+  `ID` bigint(20) NOT NULL,
+  `NAME` varchar(50) NOT NULL,
+  `TEACHERID` bigint(20) NOT NULL,
+  `SUBTEACHERID` bigint(20) NOT NULL,
+  `GRADE` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `parents`
 --
 
@@ -31,7 +45,6 @@ CREATE TABLE `parents` (
   `FIRSTNAME` varchar(30) NOT NULL,
   `MIDNAME` varchar(30) NOT NULL,
   `LASTNAME` varchar(30) NOT NULL,
-  `CHILDID` bigint(20) NOT NULL,
   `ACCOUNTID` bigint(20) NOT NULL,
   `PHONE` varchar(15) NOT NULL,
   `EMAIL` varchar(50) NOT NULL
@@ -66,7 +79,8 @@ CREATE TABLE `students` (
   `CLAZZID` bigint(20) NOT NULL,
   `LEVEL` int(11) NOT NULL,
   `ACCOUNTID` bigint(20) NOT NULL,
-  `STATUS` int(11) NOT NULL
+  `STATUS` int(11) NOT NULL,
+  `PARENTID` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -143,11 +157,21 @@ INSERT INTO `users` (`ID`, `USERNAME`, `PASSWORD`, `TYPE`, `ISADMIN`, `STATUS`, 
 --
 
 --
+-- Indexes for table `clazz`
+--
+ALTER TABLE `clazz`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `ID` (`ID`),
+  ADD KEY `TEACHERID` (`TEACHERID`),
+  ADD KEY `SUBTEACHERID` (`SUBTEACHERID`);
+
+--
 -- Indexes for table `parents`
 --
 ALTER TABLE `parents`
   ADD PRIMARY KEY (`ID`),
-  ADD KEY `ID` (`ID`);
+  ADD KEY `ID` (`ID`),
+  ADD KEY `ACCOUNTID` (`ACCOUNTID`);
 
 --
 -- Indexes for table `questions`
@@ -162,14 +186,17 @@ ALTER TABLE `questions`
 ALTER TABLE `students`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `ID` (`ID`),
-  ADD KEY `ACCOUNTID` (`ACCOUNTID`);
+  ADD KEY `ACCOUNTID` (`ACCOUNTID`),
+  ADD KEY `PARENTID` (`PARENTID`);
 
 --
 -- Indexes for table `teachers`
 --
 ALTER TABLE `teachers`
   ADD PRIMARY KEY (`ID`),
-  ADD KEY `ID` (`ID`);
+  ADD KEY `ID` (`ID`),
+  ADD KEY `ACCOUNTID` (`ACCOUNTID`),
+  ADD KEY `CLAZZID` (`CLAZZID`);
 
 --
 -- Indexes for table `userrole`
